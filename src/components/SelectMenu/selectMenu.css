@@ -1,0 +1,111 @@
+
+.select-menu-wrapper {
+    --display-rows: 8;
+    display: flex;
+    flex-direction: column;
+}
+.select-menu-wrapper .select-menu {
+    /* background-color: red; */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.select-menu-wrapper .display {
+    /* background-color: lime; */
+    height: 40px;
+    
+    border: 1px solid #d9dfe8;
+
+    display: flex;
+}
+.select-menu-wrapper .display input {
+    border: none;
+    width: 100%;
+    
+    padding: 0 15px 0 25px;
+
+    cursor: pointer;
+    border: none !important;
+}
+.select-menu-wrapper .display input[disabled] {
+    user-select: none;
+}
+.select-menu-wrapper .display input:focus {
+    outline: none;
+}
+
+.select-menu-wrapper .select-menu.open .select-list {
+    --rows: var(--display-rows)
+}
+.select-menu-wrapper .select-list {
+    /* background-color: pink; */
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    background-color: #d9dfe8;
+    overflow: auto;
+    max-height: calc(var(--rows) * 40px);
+    transition: max-height .2s;
+    --rows: 0;
+    z-index: 25;
+}
+
+.select-menu-wrapper .select-list .category {
+    display: flex;
+    flex-direction: column;
+}
+.select-menu-wrapper .select-list .category-name {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 25px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: default;
+}
+
+.select-menu-wrapper .category .item {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.select-menu .item {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    height: 40px ;
+    padding: 0 25px;
+}
+.select-menu .item.selected {
+    background-color: #A5C7F3;
+    cursor: pointer;
+}
+.select-menu .item.selected .check-indicator {
+    background: #2878E2;
+    position: relative;
+    height: 20px;
+    width: 20px;
+    margin: 0 0 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.select-menu .item.selected .check-indicator svg {
+    fill: #fff;
+    font-size: 0.8rem;
+}
+.select-menu .item:not(.selected) .check-indicator {
+    display: none;
+}
+.select-menu .item:not(.disabled) {
+    cursor: pointer;
+}
+.select-menu .item.disabled {
+    color: #bbb;
+    cursor: default;
+}
+.select-menu .item:not(.disabled, .selected):hover {
+    background-color: #e8edf3;
+}
