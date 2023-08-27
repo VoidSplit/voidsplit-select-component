@@ -61,6 +61,8 @@ Contributors names and contact info
 
 ## Version History
 
+* 0.2.13
+    * SEO optimization on npm
 * 0.2.12
     * Bug fix and README
 * 0.2.11

@@ -1,6 +1,7 @@
 {
   "name": "voidsplit_select_component",
-  "version": "0.2.12",
+  "version": "0.2.13",
+  "keywords": ["react", "react component", "select", "select menu", "vite", "select component", "openclassroom"],
   "type": "module",
   "main": "./dist/react-vite-library.umd.cjs",
   "module": "./dist/react-vite-library.es.js",
