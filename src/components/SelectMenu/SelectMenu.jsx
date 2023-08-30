@@ -1,110 +1,93 @@
-/* eslint-disable react/prop-types */
 // import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types */
+import Category from './Category';
+import Item from './Item';
 
-import { useEffect, useState } from "react"
+import { useState } from 'react';
 
-import './selectMenu.css'
+import './styles/selectMenu.css'
 
+/**
+ * Interactive selection menu component.
+ *
+ * @component
+ * @param {Object} props - The component properties.
+ * @param {function} props.innerRef - Reference to the callback function for accessing the DOM element.
+ * @param {string} props.id - Unique ID for the selection menu element.
+ * @param {Array} props.data - The data to display in the selection menu.
+ * @param {string} props.label - The label for the selection menu.
+ * @returns {JSX.Element} React element representing the selection menu.
+ */
+export function SelectMenu({innerRef, id, data, label}) {
+    // State to manage whether the menu is opened or not
+    const [isOpened, toggleOpen] = useState(false)
 
-function SelectMenu({data, selectedItem, innerRef, id}) {
-    let displayItem;
-    selectedItem ? displayItem = data.filter(e => e.name === selectedItem)[0] : displayItem = data[0].type === "category" ? data[0].categoryContent.filter(el => el.disabled !== true)[0] : data[0]
-    let displayList = [...data]
-
-    const [selected, changeSelected] = useState(displayItem)
-    const [isOpen, toggleOpen] = useState(false)
-    const [inputValue, setInputValue] = useState("");
-
-    let searchAutorisation = false
-
-    const handleOpenClick = () => {
-        toggleOpen(!isOpen)
+    // Recursive function to find an item by ID within the data hierarchy
+    function findItemById(list, idToFind) {
+        for (const item of list) {
+            if (item.id === idToFind) {
+                return item;
+            }
+            if (item.type === "category" && item.categoryContent) {
+                const foundItem = findItemById(item.categoryContent, idToFind);
+                if (foundItem) {
+                    return foundItem;
+                }
+            }
+        }
+        return null;
     }
-    const callbackFunction = (props) => {
-        changeSelected(props)
-        handleOpenClick()
-    }
-    useEffect(() => {
-        setInputValue(selected.abbreviation ? selected.abbreviation : selected.display);
-    }, [selected])
+    // Find the initial selected item using the findItemById function
+    const foundItem = findItemById(data, 0);
 
+    // State to manage the currently selected item
+    const [selected, ChangeSelected] = useState(foundItem)
+
+    // Callback function to handle item selection
+    const handleCallback = (id) => {
+        toggleOpen(false)
+        ChangeSelected(findItemById(data, id))
+    }
+    
     return (
-        <div className="select-menu-wrapper">
-            <div className={`select-menu${isOpen ? " open": ""}`}>
-                <div className="display" onClick={handleOpenClick}>
+        <div className="select-menu">
+            <label htmlFor={`${id}`} className="label">{label}</label>
+            <div className="display">
                 <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            disabled={!searchAutorisation}
-            ref={innerRef}
-            id={`${id ? id : Date.now() + Math.random()}`}
-          />
-                </div>
-                <div className="select-list">
-                    {displayList.map((el, index) => {
-                        switch(el.type) {
-                            case "item":
-                                return <SelectItem key={index} element={el} callback={callbackFunction} isSelected={el === selected ? true : false} />
-                            case "category":
-                                return <SelectCategory key={index} element={el} callback={callbackFunction} actualDisplay={selected} />
-                            default:
-                                return false
-                        }
-                    })}
-                </div>
+                    type="text"
+                    id={id}
+                    ref={innerRef}
+                    value={selected.display}
+
+                    onChange={() => null}
+                    onFocus={() => {
+                        toggleOpen(true)
+                    }}
+                    onBlur={() => {
+                        toggleOpen(false)
+                    }}
+                />
+            </div>
+            <div className={`list ${isOpened ? "open    " : ""}`}>
+                {data.map((el, index) => {
+                    switch(el.type) {
+                        case "item":
+                            return <Item toggleOpen={toggleOpen} isOpened={isOpened} selected={el.id === selected.id} key={index} display={el.display} abbreviation={el.abbreviation} action={handleCallback} id={el.id} />
+                        case "category":
+                            return <Category toggleOpen={toggleOpen} isOpened={isOpened} key={index} selected={selected.id} name={el.categoryName} itemCallback={handleCallback} list={el.categoryContent} categoryId={data.filter(el => el.type === "category").findIndex(item => item.categoryName === el.categoryName)}/>
+                        default:
+                            return false
+                    }
+                })}
             </div>
         </div>
+        
     );
 }
-
-function SelectCategory({element, actualDisplay, callback}) {
-    return (
-        <div className="category">
-            <p className="category-name">{element.categoryName}</p>
-            {element.categoryContent.map((el, index) => {
-                return <SelectItem key={index} element={el} callback={callback} isSelected={el === actualDisplay ? true : false}/>
-            })}
-        </div>
-    );
-}
-function SelectItem({ element, isSelected, callback }) {
-    const handleClick = () => {
-      callback(element);
-    };
-  
-    return (
-        <div onClick={handleClick} className={`item${element.disabled && element.disabled === true ? " disabled" : ""}${isSelected && isSelected === true ? " selected" : ""}`}>
-          {element.display}
-          <div className="check-indicator">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-              <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-            </svg>
-          </div>
-        </div>
-    );
-}
-
-export {SelectMenu};
 
 // SelectMenu.propTypes = {
-//   data: PropTypes.object,
-//   selectedItem: PropTypes.array,
-//   innerRef: PropTypes.func
+//     innerRef: PropTypes.func,
+//     id: PropTypes.string,
+//     data: PropTypes.array,
+//     label: PropTypes.string,
 // }
-// 
-// 
-// SelectCategory.propTypes = {
-//   element: PropTypes.object,
-//   actualDisplay: PropTypes.array,
-//   callback: PropTypes.func
-// }
-// 
-// 
-// SelectItem.propTypes = {
-//   element: PropTypes.object,
-//   isSelected: PropTypes.bool,
-//   callback: PropTypes.func
-// }
-// 
-// 

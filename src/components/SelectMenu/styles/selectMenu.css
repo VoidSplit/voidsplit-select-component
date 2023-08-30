@@ -1,0 +1,118 @@
+.select-menu:hover,
+.select-menu:focus {
+    --border-color: rgba(0, 0, 0, 0.7)
+}
+.select-menu:focus-within {
+    --border-color: rgb(25, 118, 210);
+}
+.select-menu:focus-within {
+    border-width: 2px;
+}
+.select-menu {
+    --border-color: rgba(0, 0, 0, 0.23);
+    
+    position: relative;
+    height: 56px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+.select-menu .display {
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.select-menu input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0 15px;
+    font-size: 16px;
+    font: inherit;
+    letter-spacing: inherit;
+    font-family:  Roboto, Helvetica, Arial, sans-serif;
+}
+.select-menu input:focus {
+    outline: none;
+}
+.select-menu:focus-within .label {
+    color: rgb(25, 118, 210);
+}
+.select-menu .label {
+    background-color: #fff;
+    padding: 0 5px;
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 13px;
+    font-weight: 400;
+    position: absolute;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    left: 10px;
+    top: calc(-13px / 2);
+}
+.select-menu .list::before {
+    position: absolute;
+    display: block;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--border-color);
+}
+.select-menu:focus-within .list {
+    border-width: 2px;
+    width: calc(100% + 4px);
+    left: -2px;
+}
+.select-menu .list.open {
+    max-height: 250px;
+    border-bottom: 1px solid var(--border-color);
+}
+.select-menu .list {
+    overflow: hidden;
+    z-index: 2;
+    background-color: #fff;
+    position: absolute;
+    width: calc(100% + 2px);
+    left: -1px;
+    top: calc(100% - 3px);
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 0 0 4px 5px;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+
+    max-height: 0;
+    overflow: auto;
+}
+.select-menu .category {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+.select-menu .category .category-name {
+    padding: 0 15px;
+    height: 25px;
+    background-color: #e8edf3;
+    display: flex;
+    align-items: center;
+}
+.select-menu .item {
+    height: 50px;
+    min-height: 25px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+}
+.select-menu .item:hover,
+.select-menu .item:focus {
+    background-color: #dce2e9;
+    outline: none;
+}
+.select-menu .item.selected {
+    background-color: rgb(25, 118, 210);
+    color: #fff;
+}

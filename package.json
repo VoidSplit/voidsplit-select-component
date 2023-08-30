@@ -1,7 +1,15 @@
 {
   "name": "voidsplit_select_component",
-  "version": "0.2.13",
-  "keywords": ["react", "react component", "select", "select menu", "vite", "select component", "openclassroom"],
+  "version": "0.3.0",
+  "keywords": [
+    "react",
+    "react component",
+    "select",
+    "select menu",
+    "vite",
+    "select component",
+    "openclassroom"
+  ],
   "type": "module",
   "main": "./dist/react-vite-library.umd.cjs",
   "module": "./dist/react-vite-library.es.js",
@@ -27,6 +35,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.2",
